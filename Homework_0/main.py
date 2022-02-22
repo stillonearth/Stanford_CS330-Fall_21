@@ -17,15 +17,17 @@ def main(config):
     net = MultiTaskNet(train.num_users,
                        train.num_items,
                        embedding_sharing=config.shared_embeddings)
+
     model = MultitaskModel(interactions=train,
                            representation=net,
                            factorization_weight=config.factorization_weight,
-                           regression_weight=config.regression_weight)
+                           regression_weight=config.regression_weight, 
+                           use_cuda=True)
     
     for epoch in range(config.epochs):
         factorization_loss, score_loss, joint_loss = model.fit(train)
-        mrr = mrr_score(model, test, train)
         mse = mse_score(model, test)
+        mrr = mrr_score(model, test, train)
         writer.add_scalar('training/Factorization Loss', factorization_loss, epoch)
         writer.add_scalar('training/MSE', score_loss, epoch)
         writer.add_scalar('training/Joint Loss', joint_loss, epoch)

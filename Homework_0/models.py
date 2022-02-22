@@ -97,7 +97,7 @@ class MultiTaskNet(nn.Module):
             self.B_emb = ZeroEmbedding(num_embeddings=num_items, embedding_dim=1)
 
         self.layers = nn.Sequential()
-        for i, size in enumerate(layer_sizes):
+        for i, _ in enumerate(layer_sizes):
             if i == len(layer_sizes) - 1:
                 self.layers.add_module("fc_"+str(i), nn.Linear(layer_sizes[i], 1))
             else:
