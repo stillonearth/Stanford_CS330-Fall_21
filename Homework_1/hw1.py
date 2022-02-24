@@ -86,7 +86,7 @@ class MANN(nn.Module):
                 l2.append(x)
             l1.append(torch.stack(l2))
 
-        y1 = torch.stack(l2).reshape(-1, self.samples_per_class, self.num_classes, self.num_classes)
+        y1 = torch.stack(l1).reshape(-1, self.samples_per_class, self.num_classes, self.num_classes)
 
         # test
         l2 = []
@@ -94,17 +94,12 @@ class MANN(nn.Module):
             image = input_images[:, self.samples_per_class, i_c, :]
             label = input_labels[:, self.samples_per_class, i_c, :]*0
             x = torch.cat([image, label], 1).unsqueeze(0)
-
             x, hidden1 = self.layer1(x, hidden1)
             x, hidden2 = self.layer2(x, hidden2)
-            
             l2.append(x)
 
-        y2 = torch.stack(l2, -1).reshape(-1, self.samples_per_class, self.num_classes, self.num_classes)
-        
-        y = torch.stack([y1, y2], 1).reshape(-1, self.samples_per_class+1, self.num_classes, self.num_classes)
-
-        return y
+        y2 = torch.stack(l2).reshape(-1, self.samples_per_class, self.num_classes, self.num_classes)
+        return torch.stack([y1, y2]).reshape(-1, self.samples_per_class+1, self.num_classes, self.num_classes)
 
     def loss_function(self, preds, labels):
         """
