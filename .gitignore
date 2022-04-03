@@ -1,0 +1,4 @@
+omniglot_resized/*
+*.pyc
+__pycache__/*
+*.0
