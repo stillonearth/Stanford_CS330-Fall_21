@@ -12,7 +12,7 @@ importlib-metadata==4.8.1
 Markdown==3.3.4
 numpy==1.21.2
 oauthlib==3.1.1
-Pillow==8.3.2
+Pillow >= 9.0
 protobuf==3.18.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
