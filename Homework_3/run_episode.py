@@ -4,6 +4,7 @@ Complete the code marked TODO."""
 import numpy as np # pylint: disable=unused-import
 import torch # pylint: disable=unused-import
 
+DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 def run_episode(
     env,
@@ -34,25 +35,49 @@ def run_episode(
 
     for _ in range(steps_per_episode):
 
+        # print(state)
+        # print(goal_state)
+
         # ======================== TODO modify code ========================
-        pass
 
         # append goal state to input, and prepare for feeding to the q-network
 
+        x = np.hstack([state, goal_state])
+        x = torch.from_numpy(x).float()
+
+        # print(x.shape)
+
         # forward pass to find action
+        q_net.eval()
+        with torch.no_grad():
+            action_values = q_net(x)
+        q_net.train()
+            
+        # greedy action
+        action = np.argmax(action_values.cpu().data.numpy())
 
         # take action, use env.step
+        (next_state, reward, done, info) = env.step(action)
 
         # add transition to episode_experience as a tuple of
         # (state, action, reward, next_state, goal)
 
+        episode_experience.append(
+            (state, action, reward, next_state, goal_state)
+        )
+
         # update episodic return
+        episodic_return += reward
 
         # update state
+        state = next_state
 
         # update succeeded bool from the info returned by env.step
+        succeeded = succeeded or info['successful_this_state']
 
         # break the episode if done=True
+        if done:
+            break
 
         # ========================      END TODO       ========================
 

@@ -11,6 +11,8 @@ import replay_buffer as experience_buffer
 import q_network
 import run_episode
 import utils
+import random
+
 from utils import HERType
 
 def update_replay_buffer(
@@ -48,39 +50,51 @@ def update_replay_buffer(
 
         if her_type == HERType.FINAL:
             # relabel episode based on final state in episode
-            pass
-
+            index = len(episode_experience) - 1
+            
             # get final goal
+            final_state, _, _, _, _ = episode_experience[index]
 
             # compute new reward
+            reward = int(np.all(final_state == state))
 
             # add to buffer
+            replay_buffer.add(np.append(state, final_state),
+                          action,
+                          reward,
+                          np.append(next_state, final_state))
 
         elif her_type == HERType.FUTURE:
             # future: relabel episode based on randomly sampled future state.
             # At each timestep t, relabel the goal with a randomly selected
             # timestep between t and the end of the episode
-            pass
+            if timestep == len(episode_experience) - 1:
+                continue
+            index = random.randrange(timestep, len(episode_experience) - 1)
+            final_state, _, _, _, _ = episode_experience[index]
 
-            # for every transition, add num_relabeled transitions to the buffer
-
-            # get random future goal
-
-            # compute new reward
-
-            # add to replay buffer
+            for ts in range(timestep, index):
+                s, a, r, ns, _ = episode_experience[ts]
+                r = int(np.all(final_state == s))
+                replay_buffer.add(np.append(s, final_state),
+                          a,
+                          r,
+                          np.append(ns, final_state))
 
         elif her_type == HERType.RANDOM:
             # random: relabel episode based on a random state from the episode
-            pass
+            if timestep == len(episode_experience) - 1:
+                continue
+            index = random.randrange(0, len(episode_experience) - 1)
+            final_state, _, _, _, _ = episode_experience[index]
 
-            # for every transition, add num_relabeled transitions to the buffer
-
-            # get random goal
-
-            # compute new reward
-
-            # add to replay buffer
+            for ts in range(index, timestep):
+                s, a, r, ns, _ = episode_experience[ts]
+                r = int(np.all(final_state == s))
+                replay_buffer.add(np.append(s, final_state),
+                          a,
+                          r,
+                          np.append(ns, final_state))
 
         # ========================      END TODO       ========================
 

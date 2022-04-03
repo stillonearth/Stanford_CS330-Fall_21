@@ -18,9 +18,9 @@ imageio==2.9.0
 imageio-ffmpeg==0.4.5
 Markdown==3.3.4
 moviepy==1.0.3
-mujoco-py==2.0.2.13
+# mujoco-py==2.0.2.13
 -e git+https://github.com/vitchyr/multiworld.git@12a05bfa4139f90741608ba409edebb95d7ef9ab#egg=multiworld
-numpy==1.21.2
+#numpy==1.21.2
 oauthlib==3.1.1
 opencv-python==4.5.3.56
 Pillow==8.3.2
@@ -39,7 +39,7 @@ six==1.16.0
 tensorboard==2.6.0
 tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.0
-torch==1.9.1
+#torch==1.9.1
 tqdm==4.62.3
 typing-extensions==3.10.0.2
 urllib3==1.26.7

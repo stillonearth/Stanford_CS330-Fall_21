@@ -41,7 +41,7 @@ if __name__ == '__main__':
         steps_per_episode = args.num_bits
         env_reward_function = lambda x, y: 0.0 if np.array_equal(x, y) else -1.0
         tensorboard_log_dir = (
-            f'./logs/gcrl/bit_flip/num_bits:{args.num_bits}/HER_type:{args.her_type}/seed:{args.random_seed}' # pylint: disable=line-too-long
+            f'./logs/gcrl/bit_flip/num_bits_{args.num_bits}/HER_type_{args.her_type}/seed_{args.random_seed}' # pylint: disable=line-too-long
         ) if args.log_dir is None else args.log_dir
 
     elif args.env == 'sawyer_reach':
