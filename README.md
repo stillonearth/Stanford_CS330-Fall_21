@@ -1,2 +1,3 @@
-# Stanford_CS330-Fall_21
-Multitask Training for Recommender Systems
+# Stanford CS330 — 2019 — Homeworks
+
+Only code solutions without writeups.
